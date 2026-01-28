@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YNWA Cards - Soccer Card Market Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;600&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pitch-green: #1a4d2e;
+            --grass-dark: #0d2818;
+            --line-white: #f8f9fa;
+            --accent-yellow: #ffd60a;
+            --card-gold: #c9a961;
+            --shadow-deep: rgba(0, 0, 0, 0.3);
+            --text-primary: #0a0a0a;
+            --text-secondary: #4a5568;
+            --bg-light: #fafbfc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            color: var(--text-primary);
+            background: var(--bg-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--grass-dark) 0%, var(--pitch-green) 100%);
+            color: var(--line-white);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px var(--shadow-deep);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: '⚽';
+            font-size: 2rem;
+            animation: spin 20s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--line-white);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-yellow);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--pitch-green) 0%, #2d5f3f 50%, var(--pitch-green) 100%);
+            color: var(--line-white);
+            padding: 8rem 2rem 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 90px,
+                    rgba(248, 249, 250, 0.03) 90px,
+                    rgba(248, 249, 250, 0.03) 180px
+                );
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            text-align: left;
+        }
+
+        .stat-number {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 3rem;
+            font-weight: 600;
+            color: var(--accent-yellow);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 5rem 0;
+        }
+
+        .section-header {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: var(--pitch-green);
+        }
+
+        .section-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+        }
+
+        /* Player Performance Grid */
+        .player-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .player-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .player-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .player-header {
+            background: linear-gradient(135deg, var(--pitch-green), #2d5f3f);
+            padding: 2rem;
+            color: white;
+            position: relative;
+        }
+
+        .player-name {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .player-position {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .player-stats {
+            padding: 1.5rem 2rem;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-name {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--pitch-green);
+        }
+
+        .trend-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .trend-up {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .trend-down {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Investment Cards */
+        .investment-section {
+            background: linear-gradient(180deg, var(--bg-light) 0%, #e8f4ea 100%);
+        }
+
+        .investment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .investment-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(26, 77, 46, 0.1);
+            border: 2px solid transparent;
+            transition: all 0.4s;
+            position: relative;
+        }
+
+        .investment-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--card-gold), var(--accent-yellow));
+        }
+
+        .investment-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--card-gold);
+            box-shadow: 0 16px 50px rgba(26, 77, 46, 0.2);
+        }
+
+        .card-image-placeholder {
+            background: linear-gradient(135deg, #2d5f3f 0%, var(--pitch-green) 100%);
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-image-placeholder::after {
+            content: '🎴';
+            position: absolute;
+            font-size: 8rem;
+            opacity: 0.1;
+            transform: rotate(-15deg);
+        }
+
+        .investment-content {
+            padding: 2rem;
+        }
+
+        .card-title {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--pitch-green);
+        }
+
+        .card-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-badge {
+            padding: 0.4rem 1rem;
+            background: #f0f9ff;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #0369a1;
+        }
+
+        .price-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #e5e7eb;
+        }
+
+        .current-price {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--card-gold);
+        }
+
+        .price-change {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .price-change.positive {
+            color: #15803d;
+        }
+
+        .price-change.negative {
+            color: #b91c1c;
+        }
+
+        /* Market Insights */
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .insight-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid var(--accent-yellow);
+            transition: transform 0.3s;
+        }
+
+        .insight-card:hover {
+            transform: translateX(8px);
+        }
+
+        .insight-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .insight-title {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: var(--pitch-green);
+        }
+
+        .insight-text {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--grass-dark);
+            color: var(--line-white);
+            padding: 3rem 2rem 2rem;
+            margin-top: 5rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            opacity: 0.8;
+            margin-bottom: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .social-links a {
+            color: var(--line-white);
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-yellow);
+        }
+
+        .copyright {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(248, 249, 250, 0.2);
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .player-grid,
+            .investment-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">YNWA CARDS</div>
+            <ul class="nav-links">
+                <li><a href="#players">Players</a></li>
+                <li><a href="#investments">Investments</a></li>
+                <li><a href="#insights">Insights</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>The Beautiful Game<br>Meets Smart Investment</h1>
+            <p class="hero-subtitle">Track player performance, analyze market trends, and discover undervalued soccer cards before they break out.</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number">450+</div>
+                    <div class="stat-label">Players Tracked</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Accuracy Rate</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Market Updates</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="players">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Top Performing Players</h2>
+                <p class="section-description">Real-time statistics and performance metrics for the hottest players in world football.</p>
+            </div>
+            <div class="player-grid">
+                <div class="player-card">
+                    <div class="player-header">
+                        <div class="player-name">Erling Haaland</div>
+                        <div class="player-position">Striker • Man City</div>
+                    </div>
+                    <div class="player-stats">
+                        <div class="stat-row">
+                            <span class="stat-name">Goals This Season</span>
+                            <span class="stat-value">24 <span class="trend-badge trend-up">↑ 12%</span></span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-name">Market Value</span>
+                            <span class="stat-value">€180M</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-name">Card Value Trend</span>
+                            <span class="stat-value">Rising <span class="trend-badge trend-up">↑ 45%</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="player-card">
+                    <div class="player-header">
+                        <div class="player-name">Jude Bellingham</div>
+                        <div class="player-position">Midfielder • Real Madrid</div>
+                    </div>
+                    <div class="player-stats">
+                        <div class="stat-row">
+                            <span class="stat-name">Goals + Assists</span>
+                            <span class="stat-value">18 <span class="trend-badge trend-up">↑ 8%</span></span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-name">Market Value</span>
+                            <span class="stat-value">€150M</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-name">Card Value Trend</span>
+                            <span class="stat-value">Hot <span class="trend-badge trend-up">↑ 67%</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="player-card">
+                    <div class="player-header">
+                        <div class="player-name">Kylian Mbappé</div>
+                        <div class="player-position">Forward • Real Madrid</div>
+                    </div>
+                    <div class="player-stats">
+                        <div class="stat-row">
+                            <span class="stat-name">Goals This Season</span>
+                            <span class="stat-value">21 <span class="trend-badge trend-up">↑ 5%</span></span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-name">Market Value</span>
+                            <span class="stat-value">€200M</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-name">Card Value Trend</span>
+                            <span class="stat-value">Stable <span class="trend-badge trend-up">↑ 12%</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="investments" class="investment-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Investment Opportunities</h2>
+                <p class="section-description">Carefully curated cards with strong growth potential based on performance analytics and market trends.</p>
+            </div>
+            <div class="investment-grid">
+                <div class="investment-card">
+                    <div class="card-image-placeholder">
+                        <span style="font-size: 5rem;">⭐</span>
+                    </div>
+                    <div class="investment-content">
+                        <h3 class="card-title">Haaland Rookie Chrome</h3>
+                        <div class="card-meta">
+                            <span class="meta-badge">PSA 10</span>
+                            <span class="meta-badge">2019 Topps</span>
+                            <span class="meta-badge">Low Pop</span>
+                        </div>
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                            Incredible upside with Haaland's continued dominance. Limited supply with rising demand from collectors.
+                        </p>
+                        <div class="price-info">
+                            <span class="current-price">$3,250</span>
+                            <span class="price-change positive">+45% (6mo)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="investment-card">
+                    <div class="card-image-placeholder">
+                        <span style="font-size: 5rem;">💎</span>
+                    </div>
+                    <div class="investment-content">
+                        <h3 class="card-title">Bellingham Auto /99</h3>
+                        <div class="card-meta">
+                            <span class="meta-badge">Autograph</span>
+                            <span class="meta-badge">2020 Panini</span>
+                            <span class="meta-badge">Numbered</span>
+                        </div>
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                            Breakthrough season at Madrid. Signed parallel with exceptional long-term potential.
+                        </p>
+                        <div class="price-info">
+                            <span class="current-price">$1,890</span>
+                            <span class="price-change positive">+67% (6mo)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="investment-card">
+                    <div class="card-image-placeholder">
+                        <span style="font-size: 5rem;">🔥</span>
+                    </div>
+                    <div class="investment-content">
+                        <h3 class="card-title">Vinícius Jr. Prizm</h3>
+                        <div class="card-meta">
+                            <span class="meta-badge">Silver Prizm</span>
+                            <span class="meta-badge">2021 Panini</span>
+                            <span class="meta-badge">High Grade</span>
+                        </div>
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                            Consistent performances and Ballon d'Or potential. Strong market momentum expected.
+                        </p>
+                        <div class="price-info">
+                            <span class="current-price">$825</span>
+                            <span class="price-change positive">+28% (6mo)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="insights">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Market Insights</h2>
+                <p class="section-description">Expert analysis and data-driven insights to help you make informed investment decisions.</p>
+            </div>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <div class="insight-icon">📈</div>
+                    <h3 class="insight-title">Rising Stars</h3>
+                    <p class="insight-text">Young players breaking out in top leagues often see card values double within their first breakthrough season. Focus on consistent performers in Champions League.</p>
+                </div>
+
+                <div class="insight-card">
+                    <div class="insight-icon">🏆</div>
+                    <h3 class="insight-title">Trophy Impact</h3>
+                    <p class="insight-text">Major tournament wins and individual awards create immediate spikes. Position yourself before World Cup and Ballon d'Or announcements.</p>
+                </div>
+
+                <div class="insight-card">
+                    <div class="insight-icon">💰</div>
+                    <h3 class="insight-title">Market Timing</h3>
+                    <p class="insight-text">Buy during off-season lulls and sell during active seasons when demand peaks. Champions League knockout stages show highest activity.</p>
+                </div>
+
+                <div class="insight-card">
+                    <div class="insight-icon">🎯</div>
+                    <h3 class="insight-title">Grading Matters</h3>
+                    <p class="insight-text">PSA 10 cards command 3-5x premiums over PSA 9. For modern cards, only invest in high grades to maximize returns.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="background: #fff3cd; border-top: 3px solid #ffc107; border-bottom: 3px solid #ffc107;">
+        <div class="container">
+            <div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 2rem; text-align: center;">
+                <h3 style="font-family: 'Archivo Black', sans-serif; font-size: 1.5rem; color: #856404; margin-bottom: 1rem;">
+                    ⚠️ Important Disclaimer
+                </h3>
+                <p style="color: #856404; line-height: 1.8; margin-bottom: 1rem; font-size: 1rem;">
+                    <strong>Nothing on this website constitutes financial, investment, or professional advice.</strong> All content is provided for informational and educational purposes only. The soccer card market is highly volatile and speculative. Card values can fluctuate significantly based on player performance, market conditions, and collector sentiment.
+                </p>
+                <p style="color: #856404; line-height: 1.8; font-size: 1rem;">
+                    You should always conduct your own thorough research and consider consulting with a qualified financial advisor before making any investment decisions. Past performance is not indicative of future results. Invest only what you can afford to lose, and never rely solely on information from this or any single source.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">⚽ YNWA CARDS</div>
+            <p class="footer-text">Your trusted source for soccer card market intelligence and investment insights.</p>
+            <div class="social-links">
+                <a href="#" title="Twitter">𝕏</a>
+                <a href="#" title="Instagram">📷</a>
+                <a href="#" title="YouTube">▶️</a>
+                <a href="#" title="Discord">💬</a>
+            </div>
+            <div class="copyright">
+                © 2026 YNWA Cards. All rights reserved. | You'll Never Walk Alone
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe cards for animation
+        document.querySelectorAll('.player-card, .investment-card, .insight-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Add dynamic stats update simulation (for demonstration)
+        setInterval(() => {
+            const statValues = document.querySelectorAll('.stat-value');
+            statValues.forEach(stat => {
+                if (Math.random() > 0.95) {
+                    stat.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        stat.style.transform = 'scale(1)';
+                    }, 300);
+                }
+            });
+        }, 3000);
+    </script>
+</body>
+</html>
