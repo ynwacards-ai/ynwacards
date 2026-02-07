@@ -1,0 +1,8 @@
+{
+  "name": "ynwa-cards",
+  "version": "1.0.0",
+  "description": "YNWA Cards - Soccer Card Market Intelligence",
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  }
+}

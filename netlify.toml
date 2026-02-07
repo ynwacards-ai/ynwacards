@@ -1,0 +1,16 @@
+# Netlify configuration file
+
+[build]
+  # No build command needed for static site
+  publish = "."
+  
+[functions]
+  # Directory where serverless functions are located
+  directory = "netlify/functions"
+
+[[redirects]]
+  # Optional: redirect www to non-www (or vice versa)
+  from = "https://www.ynwacards.com/*"
+  to = "https://ynwacards.com/:splat"
+  status = 301
+  force = true
